@@ -1,19 +1,19 @@
 # AtCoder Beginner Contest 002
 # D - 派閥
 # https://abc002.contest.atcoder.jp/tasks/abc002_4
+from itertools import combinations
+
+
+def power_set(size: int):
+    items = [i+1 for i in range(size)]
+    for i in range(size+1):
+        yield from combinations(items, i)
+
 
 class Solver:
     def __init__(self, N, M, edges) -> None:
         self.N = N
         self.edge_set = frozenset(edges)
-
-    def power_set(self, m: int, tmp: set, accumulator: set) -> set:
-        if m == self.N:
-            accumulator.add(tmp)
-            return
-        self.power_set(m+1, tmp, accumulator)
-        self.power_set(m+1, tmp.union([m+1]), accumulator)
-        return accumulator
 
     def check_constraint_satisfaction(self, habatsu: set) -> bool:
         if len(habatsu) <= 1:
@@ -28,7 +28,7 @@ class Solver:
 
     def solve(self) -> int:
         # 派閥の全組合せ列挙
-        possible_habatsu_set = self.power_set(0, frozenset(), set())
+        possible_habatsu_set = power_set(self.N)
 
         member_count = []
         for habatsu in possible_habatsu_set:
